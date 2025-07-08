@@ -1,11 +1,11 @@
 # TODO
 
-## Progresso do Projeto
-- Configuração do TypeORM com SQLite concluída.
-- Entidade User criada com os campos: fullName, email, password, dateOfBirth, weight.
-- DTOs de criação e atualização de usuário atualizados.
-- Service e módulo de usuário integrados ao TypeORM.
-- Script de carga inicial (seed) criado para popular a tabela user.
+## Project Progress
+- TypeORM configuration with SQLite completed.
+- User entity created with the following fields: fullName, email, password, dateOfBirth, weight.
+- User creation and update DTOs updated.
+- User service and module integrated with TypeORM.
+- Seed script created to populate the user table.
 
-## Próxima Tarefa Sugerida
-- Implementar hash de senha para maior segurança dos usuários. 
+## Next Suggested Task
+- Implement password hashing for better user security. 
