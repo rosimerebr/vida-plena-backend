@@ -6,6 +6,9 @@
 - User creation and update DTOs updated.
 - User service and module integrated with TypeORM.
 - Seed script created to populate the user table.
+- Bible verses array standardized with double quotes in the backend.
+- Endpoint /bible/random returns { reference, text }.
+- Frontend integration fixed to display the daily spiritual message on the Home page.
 
 ## Next Suggested Task
-- Implement password hashing for better user security. 
+- Add pagination or search to the Bible verses endpoint (optional improvement). 
