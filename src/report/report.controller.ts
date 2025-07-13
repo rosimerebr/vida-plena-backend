@@ -4,6 +4,12 @@ import { Repository, Between } from "typeorm";
 import { HabitLog } from "./entities/habit-log.entity";
 import { ReportService } from "./report.service";
 
+interface HabitReport {
+  userId: number;
+  habit: string;
+  date: string;
+}
+
 const HABITS = [
   "Sunlight",
   "Water",
@@ -12,7 +18,7 @@ const HABITS = [
   "Exercise",
   "Temperance",
   "Rest",
-  "Trust in God"
+  "Trust in God",
 ];
 
 @Controller("report")
@@ -60,7 +66,27 @@ export class ReportController {
   }
 
   @Post()
-  async registerHabit(@Body() body: { userId: number; habit: string; date: string }) {
-    return this.reportService.registerHabit(body.userId, body.habit, body.date);
+  async registerHabits(@Body() habits: HabitReport[]) {
+    console.log("Received habits registration:", habits);
+
+    try {
+      const results: HabitLog[] = [];
+      for (const habit of habits) {
+        const result = await this.reportService.registerHabit(
+          habit.userId,
+          habit.habit,
+          habit.date,
+        );
+        results.push(result);
+      }
+      console.log("Habits registered successfully:", results);
+      return {
+        message: "Habits registered successfully",
+        count: results.length,
+      };
+    } catch (error) {
+      console.error("Error registering habits:", error);
+      throw error;
+    }
   }
 } 

@@ -17,9 +17,14 @@
 - Password hashing implemented using bcrypt for user security.
 - User table cleaned and ready for new registrations.
 - User registration endpoint tested and working properly.
+- class-validator and class-transformer dependencies installed for input validation.
+- POST /report endpoint fixed to accept array of habits instead of single habit.
+- HabitLog entity userId field corrected from string to number type.
+- Habit registration error 500 resolved - backend now properly saves multiple habits.
 
 ## Next Suggested Task
 - Implement authentication for habit registration and user-specific reports.
 - Add input validation and error handling for user registration.
 - Implement password reset functionality.
-- Permitir randomização real opcional no endpoint /bible/random, caso desejado. 
+- Permitir randomização real opcional no endpoint /bible/random, caso desejado.
+- Implement user-specific habit filtering in GET /report endpoint. 
