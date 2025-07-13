@@ -12,6 +12,12 @@
 - HabitLog entity created for habit tracking.
 - POST /report endpoint implemented to register habits in the database.
 - GET /report endpoint returns weekly grouped habit data for reports.
+- CORS configuration updated to allow frontend connections from localhost:8100 and localhost:8101.
+- Password hashing implemented using bcrypt for user security.
+- User table cleaned and ready for new registrations.
+- User registration endpoint tested and working properly.
 
 ## Next Suggested Task
-- Implement authentication for habit registration and user-specific reports. 
+- Implement authentication for habit registration and user-specific reports.
+- Add input validation and error handling for user registration.
+- Implement password reset functionality. 
