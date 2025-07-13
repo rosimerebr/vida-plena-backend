@@ -9,6 +9,9 @@
 - Bible verses array standardized with double quotes in the backend.
 - Endpoint /bible/random returns { reference, text }.
 - Frontend integration fixed to display the daily spiritual message on the Home page.
+- HabitLog entity created for habit tracking.
+- POST /report endpoint implemented to register habits in the database.
+- GET /report endpoint returns weekly grouped habit data for reports.
 
 ## Next Suggested Task
-- Add pagination or search to the Bible verses endpoint (optional improvement). 
+- Implement authentication for habit registration and user-specific reports. 
