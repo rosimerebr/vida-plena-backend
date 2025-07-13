@@ -10,10 +10,16 @@ export class BibleController {
     return this.bibleService.getAllVerses();
   }
 
+  @Get("daily")
+  getDailyVerse() {
+    const dailyVerse = this.bibleService.getDailyVerse();
+    return { verse: dailyVerse };
+  }
+
   @Get("random")
   getRandomVerse() {
-    const verses = this.bibleService.getAllVerses();
-    const randomIndex = Math.floor(Math.random() * verses.length);
-    return { verse: verses[randomIndex] };
+    // Agora retorna o versículo do dia em vez de um aleatório
+    const dailyVerse = this.bibleService.getDailyVerse();
+    return { verse: dailyVerse };
   }
 } 

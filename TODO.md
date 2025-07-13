@@ -1,20 +1,25 @@
-# TODO - Vida Plena Backend
+# TODO
 
-## ✅ Concluído
+## Project Progress
+- TypeORM configuration with SQLite completed.
+- User entity created with the following fields: fullName, email, password, dateOfBirth, weight.
+- User creation and update DTOs updated.
+- User service and module integrated with TypeORM.
+- Seed script created to populate the user table.
+- Bible verses array standardized with double quotes in the backend.
+- Endpoint /bible/random returns o versículo do dia (consistente).
+- Endpoint /bible/daily criado para retornar o versículo do dia.
+- Frontend integration fixed to display the daily spiritual message on the Home page.
+- HabitLog entity created for habit tracking.
+- POST /report endpoint implemented to register habits in the database.
+- GET /report endpoint returns weekly grouped habit data for reports.
+- CORS configuration updated to allow frontend connections from localhost:8100 and localhost:8101.
+- Password hashing implemented using bcrypt for user security.
+- User table cleaned and ready for new registrations.
+- User registration endpoint tested and working properly.
 
-- [x] Implementação de hash de senha com bcrypt no cadastro de usuário
-- [x] Validação de e-mail duplicado no cadastro
-- [x] Remoção da senha do retorno da API
-- [x] Atualização do CORS para aceitar as portas 8100 e 8101 (Ionic)
-
-## Em Progresso
-
-- Integração completa com frontend
-- Testes de integração
-
-## Próximas Tarefas
-
-- Implementar autenticação JWT completa (refresh token)
-- Adicionar logs de auditoria
-- Melhorar tratamento de erros
-- Implementar sistema de recuperação de senha 
+## Next Suggested Task
+- Implement authentication for habit registration and user-specific reports.
+- Add input validation and error handling for user registration.
+- Implement password reset functionality.
+- Permitir randomização real opcional no endpoint /bible/random, caso desejado. 
