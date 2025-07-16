@@ -11,6 +11,11 @@ export class ReportService {
   ) {}
 
   async registerHabit(userId: number, habit: string, date: string) {
+    // Verifica se já existe registro para o mesmo userId, habit e date
+    const exists = await this.habitLogRepo.findOneBy({ userId, habit, date });
+    if (exists) {
+      return exists; // Não salva duplicado
+    }
     const log = this.habitLogRepo.create({ userId, habit, date });
     return this.habitLogRepo.save(log);
   }
