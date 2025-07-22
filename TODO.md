@@ -17,12 +17,17 @@
 - Password hashing implemented using bcrypt for user security.
 - User table cleaned and ready for new registrations.
 - User registration endpoint tested and working properly.
+- Implemented relational model for habits using a dedicated `habit` table and `habitId` foreign key in `habit_log`.
+- Added an endpoint `GET /report/habit` to fetch the list of available habits.
+- Updated `seed.ts` to populate the new `habit` table.
+- Refactored report endpoints (weekly/monthly) to work with the new relational model.
 - class-validator and class-transformer dependencies installed for input validation.
 - POST /report endpoint fixed to accept array of habits instead of single habit.
 - HabitLog entity userId field corrected from string to number type.
 - Habit registration error 500 resolved - backend now properly saves multiple habits.
 
 ## Next Suggested Task
+- Adjust frontend to fetch habits from `GET /report/habit` and use `habitId` when registering daily habits.
 - Implement authentication for habit registration and user-specific reports.
 - Add input validation and error handling for user registration.
 - Implement password reset functionality.
