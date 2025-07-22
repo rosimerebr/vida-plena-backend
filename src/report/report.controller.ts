@@ -54,15 +54,44 @@ export class ReportController {
     }
 
     // Agrupa os logs por hábito e dia da semana
+    // E conta quantos hábitos diferentes foram marcados por dia
+    const habitsPerDay: Record<number, Set<string>> = {
+      0: new Set(),
+      1: new Set(),
+      2: new Set(),
+      3: new Set(),
+      4: new Set(),
+      5: new Set(),
+      6: new Set(),
+    };
     for (const log of logs) {
       const habit = log.habit;
       const day = new Date(log.date).getDay(); // 0=domingo, 6=sábado
       if (result[habit]) {
         result[habit][day] += 1;
       }
+      habitsPerDay[day].add(habit);
     }
 
-    return result;
+    // Calcular streak: maior sequência de dias consecutivos em que TODOS os hábitos foram marcados
+    let streak = 0;
+    let currentStreak = 0;
+    for (let i = 0; i < 7; i++) {
+      if (habitsPerDay[i].size === HABITS.length) {
+        currentStreak++;
+        if (currentStreak > streak) streak = currentStreak;
+      } else {
+        currentStreak = 0;
+      }
+    }
+
+    // Calcular totalCompleted: soma de todas as marcações de hábitos na semana
+    let totalCompleted = 0;
+    for (const habit of HABITS) {
+      totalCompleted += result[habit].reduce((sum, val) => sum + val, 0);
+    }
+
+    return { ...result, streak, totalCompleted };
   }
 
   @Post()
