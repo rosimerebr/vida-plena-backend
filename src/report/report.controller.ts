@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post } from "@nestjs/common";
+import { Controller, Get, Body, Post, Query } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, Between } from "typeorm";
 import { HabitLog } from "./entities/habit-log.entity";
@@ -92,6 +92,11 @@ export class ReportController {
     }
 
     return { ...result, streak, totalCompleted };
+  }
+
+  @Get('monthly')
+  async getMonthlyReport(@Query('userId') userId: string, @Query('month') month: string) {
+    return this.reportService.getMonthlyLogs(Number(userId), month);
   }
 
   @Post()
