@@ -42,7 +42,7 @@ export class ReportController {
       where: {
         date: Between(
           startOfWeek.toISOString().slice(0, 10),
-          endOfWeek.toISOString().slice(0, 10)
+          endOfWeek.toISOString().slice(0, 10),
         ),
       },
     });
@@ -118,4 +118,4 @@ export class ReportController {
       throw error;
     }
   }
-} 
+}

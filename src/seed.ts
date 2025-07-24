@@ -1,16 +1,19 @@
 import { DataSource } from "typeorm";
 import { User } from "./user/entities/user.entity";
+import { Habit } from "./report/entities/habit.entity";
+import { HabitLog } from "./report/entities/habit-log.entity";
 
 const AppDataSource = new DataSource({
   type: "sqlite",
   database: "db.sqlite",
-  entities: [User],
+  entities: [User, Habit, HabitLog],
   synchronize: true,
 });
 
 async function seed() {
   await AppDataSource.initialize();
   const userRepository = AppDataSource.getRepository(User);
+  const habitRepository = AppDataSource.getRepository(Habit);
 
   const users = [
     {
@@ -41,9 +44,32 @@ async function seed() {
     if (!exists) {
       const user = userRepository.create(data);
       await userRepository.save(user);
-      console.log(`Usuário ${data.fullName} inserido!`);
+      console.log(`User ${data.fullName} inserted!`);
     } else {
-      console.log(`Usuário ${data.fullName} já existe.`);
+      console.log(`User ${data.fullName} already exists.`);
+    }
+  }
+
+  // Seed dos hábitos
+  const habits = [
+    { name: "Sunlight", description: "Sun exposure" },
+    { name: "Water", description: "Proper hydration" },
+    { name: "Air", description: "Clean air and breathing" },
+    { name: "Healthy Food", description: "Healthy eating" },
+    { name: "Exercise", description: "Physical exercise" },
+    { name: "Temperance", description: "Temperance and balance" },
+    { name: "Rest", description: "Rest and sleep" },
+    { name: "Trust in God", description: "Trust in God" },
+  ];
+
+  for (const data of habits) {
+    const exists = await habitRepository.findOneBy({ name: data.name });
+    if (!exists) {
+      const habit = habitRepository.create(data);
+      await habitRepository.save(habit);
+      console.log(`Habit ${data.name} inserted!`);
+    } else {
+      console.log(`Habit ${data.name} already exists.`);
     }
   }
 
@@ -51,5 +77,5 @@ async function seed() {
 }
 
 seed()
-  .then(() => console.log("Carga inicial concluída!"))
+  .then(() => console.log("Initial charge complete!"))
   .catch(console.error); 
