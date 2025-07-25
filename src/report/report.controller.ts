@@ -31,12 +31,12 @@ export class ReportController {
 
   @Get()
   async getWeeklyHabitsReport() {
-    // Busca todos os hábitos da semana atual
+    // Search all habits for the current week
     const today = new Date();
     const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay()); // domingo
+    startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday
     const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // sábado
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Saturday
 
     const logs = await this.habitLogRepo.find({
       where: {
@@ -47,14 +47,14 @@ export class ReportController {
       },
     });
 
-    // Inicializa o resultado
+    // Initialize the result
     const result: Record<string, number[]> = {};
     for (const habit of HABITS) {
       result[habit] = [0, 0, 0, 0, 0, 0, 0];
     }
 
-    // Agrupa os logs por hábito e dia da semana
-    // E conta quantos hábitos diferentes foram marcados por dia
+    // Groups logs by habit and day of the week
+    // And count how many different habits were marked per day
     const habitsPerDay: Record<number, Set<string>> = {
       0: new Set(),
       1: new Set(),
@@ -66,7 +66,7 @@ export class ReportController {
     };
     for (const log of logs) {
       const habit = log.habit;
-      const day = new Date(log.date).getDay(); // 0=domingo, 6=sábado
+      const day = new Date(log.date).getDay(); // 0=Sunday, 6=Saturday
       if (result[habit]) {
         result[habit][day] += 1;
       }
@@ -85,7 +85,7 @@ export class ReportController {
       }
     }
 
-    // Calcular totalCompleted: soma de todas as marcações de hábitos na semana
+    // Calculate totalCompleted: sum of all habit tags in the week
     let totalCompleted = 0;
     for (const habit of HABITS) {
       totalCompleted += result[habit].reduce((sum, val) => sum + val, 0);
