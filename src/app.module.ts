@@ -32,7 +32,7 @@ import { ReportModule } from "./report/report.module";
             password: configService.get<string>("DATABASE_PASSWORD"),
             database: configService.get<string>("DATABASE_NAME"),
             entities: [__dirname + "/**/*.entity{.ts,.js}"],
-            synchronize: isProd,
+            synchronize: !isProd,
           };
         } else {
           return {
