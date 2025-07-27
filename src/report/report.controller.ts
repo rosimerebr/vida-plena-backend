@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post, Query, UseGuards, Request } from "@nestjs/common";
+import { Controller, Get, Body, Post, Query, UseGuards, Request, Param } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, Between } from "typeorm";
 import { HabitLog } from "./entities/habit-log.entity";
@@ -103,6 +103,27 @@ export class ReportController {
   async getMonthlyReport(@Request() req, @Query('month') month: string) {
     const userId = req.user.userId;
     return this.reportService.getMonthlyLogs(userId, month);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('habits/:date')
+  async getHabitsByDate(@Request() req, @Param('date') date: string) {
+    const userId = req.user.userId;
+    
+    const logs = await this.habitLogRepo.find({
+      where: {
+        userId: userId,
+        date: date,
+      },
+    });
+
+    // Convert logs to habit status object
+    const habitStatus: Record<string, boolean> = {};
+    for (const habit of HABITS) {
+      habitStatus[habit] = logs.some(log => log.habit === habit);
+    }
+
+    return habitStatus;
   }
 
   @UseGuards(JwtAuthGuard)
