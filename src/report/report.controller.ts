@@ -1,11 +1,11 @@
-import { Controller, Get, Body, Post, Query } from "@nestjs/common";
+import { Controller, Get, Body, Post, Query, UseGuards, Request } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, Between } from "typeorm";
 import { HabitLog } from "./entities/habit-log.entity";
 import { ReportService } from "./report.service";
+import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 
 interface HabitReport {
-  userId: number;
   habit: string;
   date: string;
 }
@@ -29,9 +29,12 @@ export class ReportController {
     private readonly reportService: ReportService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async getWeeklyHabitsReport() {
-    // Search all habits for the current week
+  async getWeeklyHabitsReport(@Request() req) {
+    const userId = req.user.userId;
+    
+    // Search habits for the current week for the authenticated user
     const today = new Date();
     const startOfWeek = new Date(today);
     startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday
@@ -40,6 +43,7 @@ export class ReportController {
 
     const logs = await this.habitLogRepo.find({
       where: {
+        userId: userId,
         date: Between(
           startOfWeek.toISOString().slice(0, 10),
           endOfWeek.toISOString().slice(0, 10),
@@ -94,20 +98,24 @@ export class ReportController {
     return { ...result, streak, totalCompleted };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('monthly')
-  async getMonthlyReport(@Query('userId') userId: string, @Query('month') month: string) {
-    return this.reportService.getMonthlyLogs(Number(userId), month);
+  async getMonthlyReport(@Request() req, @Query('month') month: string) {
+    const userId = req.user.userId;
+    return this.reportService.getMonthlyLogs(userId, month);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async registerHabits(@Body() habits: HabitReport[]) {
+  async registerHabits(@Request() req, @Body() habits: HabitReport[]) {
+    const userId = req.user.userId;
     console.log("Received habits registration:", habits);
 
     try {
       const results: HabitLog[] = [];
       for (const habit of habits) {
         const result = await this.reportService.registerHabit(
-          habit.userId,
+          userId,
           habit.habit,
           habit.date,
         );
