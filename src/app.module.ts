@@ -41,6 +41,9 @@ import { ReportModule } from "./report/report.module";
             database: postgresDatabase,
             entities: [__dirname + "/**/*.entity{.ts,.js}"],
             synchronize: !isProd,
+            ssl: {
+              rejectUnauthorized: false,
+            },
           };
         } else {
           // Fallback para SQLite se Postgres não estiver configurado
