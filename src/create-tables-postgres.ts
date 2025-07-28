@@ -21,11 +21,11 @@ async function createTables() {
   try {
     await AppDataSource.initialize();
     console.log("✅ Database connected successfully!");
-    
+
     // Força a criação das tabelas
     await AppDataSource.synchronize();
     console.log("✅ Tables created successfully!");
-    
+
     await AppDataSource.destroy();
     console.log("✅ Connection closed!");
   } catch (error) {
@@ -33,4 +33,4 @@ async function createTables() {
   }
 }
 
-createTables(); 
+createTables();

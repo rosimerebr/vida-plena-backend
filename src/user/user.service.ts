@@ -4,7 +4,8 @@ import { Repository } from "typeorm";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from "bcrypt";
+import { ChangePasswordDto } from "./dto/change-password.dto";
 
 @Injectable()
 export class UserService {
@@ -15,9 +16,11 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     // Verifica se o e-mail já existe
-    const existingUser = await this.userRepository.findOneBy({ email: createUserDto.email });
+    const existingUser = await this.userRepository.findOneBy({
+      email: createUserDto.email,
+    });
     if (existingUser) {
-      throw new ConflictException('E-mail já cadastrado');
+      throw new ConflictException("E-mail já cadastrado");
     }
 
     // Hash da senha
@@ -53,5 +56,18 @@ export class UserService {
 
   async findByEmail(email: string) {
     return this.userRepository.findOneBy({ email });
+  }
+
+  async changePassword(userId: number, dto: ChangePasswordDto) {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) throw new Error("Usuário não encontrado");
+
+    const passwordMatch = await bcrypt.compare(dto.oldPassword, user.password);
+    if (!passwordMatch) throw new Error("Senha antiga incorreta");
+
+    user.password = await bcrypt.hash(dto.newPassword, 10);
+    await this.userRepository.save(user);
+
+    return { message: "Senha alterada com sucesso" };
   }
 }
