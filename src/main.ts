@@ -11,7 +11,7 @@ async function bootstrap() {
       "https://vida-plena.netlify.app",
       "https://*.netlify.app",
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   });

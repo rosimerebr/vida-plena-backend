@@ -45,8 +45,13 @@ export class UserController {
     @Request() req,
     @Body() changePasswordDto: ChangePasswordDto
   ) {
-    const userId = req.user.userId;
-    return this.userService.changePassword(userId, changePasswordDto);
+    try {
+      const userId = req.user.userId;
+      return await this.userService.changePassword(userId, changePasswordDto);
+    } catch (error) {
+      console.error("Controller error:", error);
+      throw error;
+    }
   }
 
   @Delete(":id")

@@ -4,8 +4,8 @@ import { Repository } from "typeorm";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { User } from "./entities/user.entity";
-import * as bcrypt from "bcrypt";
 import { ChangePasswordDto } from "./dto/change-password.dto";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -25,10 +25,16 @@ export class UserService {
 
     // Hash da senha
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    let hashedSecretAnswer = null;
+    if (createUserDto.secretAnswer) {
+      hashedSecretAnswer = await bcrypt.hash(createUserDto.secretAnswer, 10);
+    }
 
     const user = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
+      secretQuestion: createUserDto.secretQuestion || "What is your mother's name?",
+      secretAnswer: hashedSecretAnswer || undefined,
     });
 
     const savedUser = await this.userRepository.save(user);
@@ -59,15 +65,30 @@ export class UserService {
   }
 
   async changePassword(userId: number, dto: ChangePasswordDto) {
+    console.log("changePassword called with:", { userId, dto });
+    
     const user = await this.userRepository.findOneBy({ id: userId });
-    if (!user) throw new Error("Usuário não encontrado");
+    console.log("User found:", user ? "yes" : "no");
+    
+    if (!user) {
+      throw new Error("Usuário não encontrado");
+    }
 
     const passwordMatch = await bcrypt.compare(dto.oldPassword, user.password);
-    if (!passwordMatch) throw new Error("Senha antiga incorreta");
+    console.log("Password match:", passwordMatch);
+    
+    if (!passwordMatch) {
+      throw new Error("Senha antiga incorreta");
+    }
 
-    user.password = await bcrypt.hash(dto.newPassword, 10);
+    const newHashedPassword = await bcrypt.hash(dto.newPassword, 10);
+    user.password = newHashedPassword;
     await this.userRepository.save(user);
 
     return { message: "Senha alterada com sucesso" };
+  }
+
+  async updatePassword(userId: number, hashedPassword: string) {
+    await this.userRepository.update(userId, { password: hashedPassword });
   }
 }

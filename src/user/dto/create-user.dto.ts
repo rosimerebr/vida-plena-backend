@@ -19,4 +19,6 @@ export class CreateUserDto {
 
   @IsNumber()
   weight: number;
+  secretQuestion?: string;
+  secretAnswer?: string;
 }

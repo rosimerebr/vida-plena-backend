@@ -86,7 +86,7 @@ export class ReportController {
         if (currentStreak > streak) streak = currentStreak;
       } else {
         currentStreak = 0;
-      }
+  }
     }
 
     // Calculate totalCompleted: sum of all habit tags in the week
@@ -152,4 +152,4 @@ export class ReportController {
       throw error;
     }
   }
-}
+} 

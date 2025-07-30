@@ -19,4 +19,10 @@ export class User {
 
   @Column({ type: "float" })
   weight: number;
+
+  @Column({ nullable: true })
+  secretQuestion: string; // Exemplo: 'Nome da mãe'
+
+  @Column({ nullable: true })
+  secretAnswer: string; // Armazene o hash da resposta
 }
