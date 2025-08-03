@@ -9,6 +9,7 @@ async function bootstrap() {
       "http://localhost:8101",
       "https://vida-plena-app.netlify.app",
       "https://vida-plena.netlify.app",
+      "https://vidaplenaproject.netlify.app",
       "https://*.netlify.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
